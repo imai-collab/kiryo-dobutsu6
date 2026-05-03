@@ -384,6 +384,13 @@ export default function App() {
   useEffect(() => {
     if (puzzles.length > 0) {
       localStorage.setItem("shogi_puzzles", JSON.stringify(puzzles));
+      fetch("/api/save-puzzles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ puzzles }),
+      }).catch(err => console.error("Failed to sync puzzles to server:", err));
     }
   }, [puzzles]);
 
