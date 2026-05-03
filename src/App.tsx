@@ -1161,6 +1161,28 @@ export default function App() {
                     >
                       {isImporting ? "読み込み中..." : "PDFから追加"}
                     </button>
+                    <button
+                      onClick={async () => {
+                        try {
+                          const res = await fetch("/api/save-puzzles", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ puzzles }),
+                          });
+                          if (!res.ok) throw new Error("Failed to save to server");
+                          setErrorMsg("保存完了にゃ！「Sync to GitHub」を実行してにゃ！");
+                          setTimeout(() => setErrorMsg(null), 5000);
+                        } catch(e) {
+                          setErrorMsg("保存に失敗したにゃ...");
+                          setTimeout(() => setErrorMsg(null), 3000);
+                          console.error(e);
+                        }
+                      }}
+                      className="text-xs px-3 py-1 font-bold flex items-center gap-1 rounded-lg bg-[#EAE8E3] hover:bg-[#DEDCD7] text-[#634C32] transition-colors"
+                    >
+                      <RefreshCcw size={14} />
+                      Sync用にサーバーへ保存
+                    </button>
                   </div>
                 </div>
                 <div className="grid grid-cols-5 gap-2">
